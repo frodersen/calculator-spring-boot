@@ -1,9 +1,12 @@
 package com.example.calculator.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,6 +19,9 @@ public class User {
 
     private String username;
     private String password; // Store hashed passwords only
+
+    @OneToMany
+    private List<Calculation> calculations;
 
     // Getters and Setters
 
@@ -42,4 +48,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public List<Calculation> getCalculations() {
+        return calculations;
+      }
+    
+      public void setCalculations(List<Calculation> calculations) {
+        this.calculations = calculations;
+      }
 }
