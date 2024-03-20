@@ -38,12 +38,18 @@ public class CalculatorController {
     private static final Logger logger = LoggerFactory.getLogger(CalculatorController.class);
 
     @GetMapping("/calculations")
-    public List<Calculation> getCalculations(@RequestParam(value = "page", defaultValue = "0") int page,
-                                             @RequestParam(value = "size", defaultValue = "10") int size, HttpServletRequest request) {
-        String username = jwtUtil.getUsernameFromToken(jwtUtil.resolveToken(request));
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        return calculationRepository.findByUserOrderByCreatedDesc(user, PageRequest.of(page, size));
-    }
+    public ResponseEntity<List<Calculation>> getCalculations(
+        @RequestParam(value = "page", defaultValue = "0") int page,
+        @RequestParam(value = "size", defaultValue = "10") int size,
+        HttpServletRequest request) {
+    String username = jwtUtil.getUsernameFromToken(jwtUtil.resolveToken(request));
+    User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+    // Fetch the last ten calculations (or as specified by the page and size parameters)
+    List<Calculation> calculations = calculationRepository.findByUserOrderByCreatedDesc(user, PageRequest.of(page, size));
+    return ResponseEntity.ok(calculations);
+}
 
     @PostMapping("api/calculate")
     public ResponseEntity<?> calculate(@RequestBody CalculationRequest request, HttpServletRequest httpRequest) {

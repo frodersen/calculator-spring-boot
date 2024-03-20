@@ -20,7 +20,7 @@ public class User {
     private String username;
     private String password; // Store hashed passwords only
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Calculation> calculations;
 
     // Getters and Setters
