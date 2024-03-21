@@ -37,7 +37,7 @@ public class CalculatorController {
 
     private static final Logger logger = LoggerFactory.getLogger(CalculatorController.class);
 
-    @GetMapping("/calculations")
+    @GetMapping("api/calculations")
     public ResponseEntity<List<Calculation>> getCalculations(
         @RequestParam(value = "page", defaultValue = "0") int page,
         @RequestParam(value = "size", defaultValue = "10") int size,
